@@ -1,11 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnirepContract = void 0;
 const ethers_1 = require("ethers");
-const contracts_1 = require("@unirep/contracts");
 const circuits_1 = require("@unirep/circuits");
 const defaults_1 = require("../cli/defaults");
 const utils_1 = require("../cli/utils");
+const Unirep_json_1 = __importDefault(require("../artifacts/Unirep.sol/Unirep.json"));
 /**
  * An API module of Unirep contracts.
  * All contract-interacting domain logic should be defined in here.
@@ -530,7 +533,7 @@ class UnirepContract {
         if (!utils_1.validateEthAddress(unirepAddress)) {
             console.error('Error: invalid Unirep contract address');
         }
-        this.contract = contracts_1.getUnirepContract(unirepAddress, this.provider);
+        this.contract = new ethers_1.ethers.Contract(unirepAddress, Unirep_json_1.default.abi, this.provider);
     }
 }
 exports.UnirepContract = UnirepContract;

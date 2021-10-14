@@ -1,9 +1,9 @@
 import { ethers } from 'ethers';
-import { getUnirepContract } from '@unirep/contracts'
 import { formatProofForVerifierContract } from '@unirep/circuits'
 import { DEFAULT_ETH_PROVIDER, } from '../cli/defaults';
 import { checkDeployerProviderConnection, promptPwd, validateEthAddress, validateEthSk } from '../cli/utils';
 import { IAttestation } from '.';
+import Unirep from "../artifacts/Unirep.sol/Unirep.json"
 
 /**
  * An API module of Unirep contracts.
@@ -23,7 +23,12 @@ export class UnirepContract {
          if (!validateEthAddress(unirepAddress)) {
             console.error('Error: invalid Unirep contract address')
         }
-        this.contract = getUnirepContract(unirepAddress, this.provider)
+        
+        this.contract = new ethers.Contract(
+            unirepAddress,
+            Unirep.abi,
+            this.provider,
+        )
     }
 
     public unlock = async (eth_privkey?: string): Promise<string> => {
