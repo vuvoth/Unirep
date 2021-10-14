@@ -10,8 +10,8 @@ exports.verifyNewGSTProofByIndex = exports.genUserStateFromParams = exports.genU
 const ethers_1 = require("ethers");
 const keyv_1 = __importDefault(require("keyv"));
 const assert_1 = __importDefault(require("assert"));
-const contracts_1 = require("@unirep/contracts");
 const crypto_1 = require("@unirep/crypto");
+const Unirep_json_1 = __importDefault(require("../artifacts/Unirep.sol/Unirep.json"));
 const testLocal_1 = require("../config/testLocal");
 const UnirepState_1 = require("./UnirepState");
 const UserState_1 = require("./UserState");
@@ -64,7 +64,7 @@ const genEpochKey = (identityNullifier, epoch, nonce, _epochTreeDepth = testLoca
     ];
     let epochKey = crypto_1.hash5(values);
     // Adjust epoch key size according to epoch tree depth
-    const epochKeyModed = BigInt(epochKey) % BigInt(2 ** _epochTreeDepth);
+    const epochKeyModed = BigInt(epochKey.toString()) % BigInt(2 ** _epochTreeDepth);
     return epochKeyModed;
 };
 exports.genEpochKey = genEpochKey;
@@ -173,7 +173,7 @@ const verifyAttestationProofsByIndex = async (unirepContract, proofIndex) => {
  */
 const genUnirepStateFromContract = async (provider, address, startBlock) => {
     var _a, _b, _c, _d, _e, _f;
-    const unirepContract = await contracts_1.getUnirepContract(address, provider);
+    const unirepContract = new ethers_1.ethers.Contract(address, Unirep_json_1.default.abi, provider);
     const treeDepths_ = await unirepContract.treeDepths();
     const globalStateTreeDepth = treeDepths_.globalStateTreeDepth;
     const userStateTreeDepth = treeDepths_.userStateTreeDepth;
@@ -310,7 +310,7 @@ exports.genUserStateFromParams = genUserStateFromParams;
  */
 const _genUserStateFromContract = async (provider, address, startBlock, userIdentity, userIdentityCommitment) => {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    const unirepContract = await contracts_1.getUnirepContract(address, provider);
+    const unirepContract = new ethers_1.ethers.Contract(address, Unirep_json_1.default.abi, provider);
     const treeDepths_ = await unirepContract.treeDepths();
     const globalStateTreeDepth = treeDepths_.globalStateTreeDepth;
     const userStateTreeDepth = treeDepths_.userStateTreeDepth;

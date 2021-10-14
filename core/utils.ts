@@ -4,8 +4,8 @@
 import { ethers } from 'ethers'
 import Keyv from "keyv"
 import assert from 'assert'
-import { getUnirepContract } from '@unirep/contracts'
 import { hash5, hashLeftRight, IncrementalQuinTree, SnarkBigInt, SparseMerkleTreeImpl } from '@unirep/crypto'
+import Unirep from "../artifacts/Unirep.sol/Unirep.json"
 
 import { circuitEpochTreeDepth, circuitGlobalStateTreeDepth, circuitUserStateTreeDepth, epochTreeDepth, globalStateTreeDepth, userStateTreeDepth } from '../config/testLocal'
 import { Attestation, IEpochTreeLeaf, UnirepState } from './UnirepState'
@@ -64,7 +64,7 @@ const genEpochKey = (identityNullifier: SnarkBigInt, epoch: number, nonce: numbe
     ]
     let epochKey = hash5(values)
     // Adjust epoch key size according to epoch tree depth
-    const epochKeyModed = BigInt(epochKey) % BigInt(2 ** _epochTreeDepth)
+    const epochKeyModed = BigInt(epochKey.toString()) % BigInt(2 ** _epochTreeDepth)
     return epochKeyModed
 }
 
@@ -219,8 +219,9 @@ const genUnirepStateFromContract = async (
     startBlock: number,
 ) => {
 
-    const unirepContract = await getUnirepContract(
+    const unirepContract = new ethers.Contract(
         address,
+        Unirep.abi,
         provider,
     )
 
@@ -425,7 +426,11 @@ const _genUserStateFromContract = async (
     userIdentityCommitment: any,
 ) => {
 
-    const unirepContract = await getUnirepContract(address, provider)
+    const unirepContract = new ethers.Contract(
+        address,
+        Unirep.abi,
+        provider,
+    )
 
     const treeDepths_ = await unirepContract.treeDepths()
     const globalStateTreeDepth = treeDepths_.globalStateTreeDepth
