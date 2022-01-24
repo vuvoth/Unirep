@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { circuitGlobalStateTreeDepth, circuitUserStateTreeDepth, circuitEpochTreeDepth } from '@unirep/circuits/config';
 
 const globalStateTreeDepth = 16;
 
@@ -14,12 +15,6 @@ const numAttestationsPerProof = 5;
 
 const epochLength = 30;  // 30 seconds
 
-
-const circuitGlobalStateTreeDepth = 4;
-
-const circuitUserStateTreeDepth = 4;
-
-const circuitEpochTreeDepth = 32;
 
 const maxReputationBudget = 10;
 

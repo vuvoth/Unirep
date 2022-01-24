@@ -109,7 +109,7 @@ describe('test all CLI subcommands', function() {
             const command = `npx ts-node cli/index.ts userSignUp` +
                 ` -x ${unirepContract.address} ` +
                 ` -c ${userIdentityCommitment} ` +
-                ` -d ${userPrivKey} `
+                ` -d ${deployerPrivKey} `
 
             console.log(command)
             const output = exec(command).stdout.trim()

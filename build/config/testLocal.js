@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.maxReputationBudget = exports.userStateTreeDepth = exports.maxAttesters = exports.maxUsers = exports.numAttestationsPerProof = exports.numEpochKeyNoncePerEpoch = exports.globalStateTreeDepth = exports.epochTreeDepth = exports.epochLength = exports.circuitEpochTreeDepth = exports.circuitUserStateTreeDepth = exports.circuitGlobalStateTreeDepth = exports.attestingFee = void 0;
 const ethers_1 = require("ethers");
+const config_1 = require("@unirep/circuits/config");
+Object.defineProperty(exports, "circuitGlobalStateTreeDepth", { enumerable: true, get: function () { return config_1.circuitGlobalStateTreeDepth; } });
+Object.defineProperty(exports, "circuitUserStateTreeDepth", { enumerable: true, get: function () { return config_1.circuitUserStateTreeDepth; } });
+Object.defineProperty(exports, "circuitEpochTreeDepth", { enumerable: true, get: function () { return config_1.circuitEpochTreeDepth; } });
 const globalStateTreeDepth = 16;
 exports.globalStateTreeDepth = globalStateTreeDepth;
 const userStateTreeDepth = 16;
@@ -16,15 +20,9 @@ const numAttestationsPerProof = 5;
 exports.numAttestationsPerProof = numAttestationsPerProof;
 const epochLength = 30; // 30 seconds
 exports.epochLength = epochLength;
-const circuitGlobalStateTreeDepth = 4;
-exports.circuitGlobalStateTreeDepth = circuitGlobalStateTreeDepth;
-const circuitUserStateTreeDepth = 4;
-exports.circuitUserStateTreeDepth = circuitUserStateTreeDepth;
-const circuitEpochTreeDepth = 32;
-exports.circuitEpochTreeDepth = circuitEpochTreeDepth;
 const maxReputationBudget = 10;
 exports.maxReputationBudget = maxReputationBudget;
-const maxUsers = 2 ** circuitGlobalStateTreeDepth - 1;
+const maxUsers = 2 ** config_1.circuitGlobalStateTreeDepth - 1;
 exports.maxUsers = maxUsers;
-const maxAttesters = 2 ** circuitUserStateTreeDepth - 1;
+const maxAttesters = 2 ** config_1.circuitUserStateTreeDepth - 1;
 exports.maxAttesters = maxAttesters;
