@@ -13,9 +13,9 @@ yarn install
 
 - The address of Unirep smart contract on goerli testnet
     ```
-    0xcbE33B11a18B0388a2f2BD8eF53778fAF6c221cC
+    0x861F280876Ba65219Cb50D217ffA11237271b0B6
     ```
-    See [Etherscan](https://goerli.etherscan.io/address/0xcbE33B11a18B0388a2f2BD8eF53778fAF6c221cC)
+    See [Etherscan](https://goerli.etherscan.io/address/0x861F280876Ba65219Cb50D217ffA11237271b0B6)
 - Apply for an account from [Alchemy](https://www.alchemy.com/) or [Infura](https://infura.io/), change the `DEFAULT_ETH_PROVIDER` to the given provider url
     For example
     ```
