@@ -57,6 +57,7 @@ declare class UserState {
     getUnirepStateGSTree: (epoch: number) => IncrementalQuinTree;
     getUnirepStateEpochTree: (epoch: number) => Promise<SparseMerkleTreeImpl>;
     getUnirepState: () => UnirepState;
+    isEpochKeySealed: (epochKey: string) => boolean;
     getAttestations: (epochKey: string) => IAttestation[];
     addAttestation: (epochKey: string, attestation: IAttestation, blockNumber?: number | undefined) => void;
     addReputationNullifiers: (nullifier: BigInt, blockNumber?: number | undefined) => void;

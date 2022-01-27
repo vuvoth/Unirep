@@ -97,6 +97,12 @@ class UserState {
             return this.unirepState;
         };
         /*
+        * Check if epoch key has been sealed
+        */
+        this.isEpochKeySealed = (epochKey) => {
+            return this.unirepState.isEpochKeySealed(epochKey);
+        };
+        /*
          * Get the attestations of given epoch key
          */
         this.getAttestations = (epochKey) => {

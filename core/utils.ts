@@ -523,6 +523,7 @@ const genUnirepStateFromContract = async (
                 )
                 const epochKey = args?._epochKey
                 if(epochKey.eq(results?.epochKey)) {
+                    if (unirepState.isEpochKeySealed(epochKey.toString())) continue
                     unirepState.addAttestation(epochKey.toString(), attestation, blockNumber)
                 }
             }
@@ -899,6 +900,7 @@ const genUserStateFromContract = async (
                 )
                 const epochKey = args?._epochKey
                 if(epochKey.eq(results?.epochKey)) {
+                    if (userState.isEpochKeySealed(epochKey.toString())) continue
                     userState.addAttestation(epochKey.toString(), attestation, blockNumber)
                 }
             }

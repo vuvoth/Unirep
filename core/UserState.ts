@@ -205,6 +205,13 @@ class UserState {
     }
 
     /*
+    * Check if epoch key has been sealed
+    */
+    public isEpochKeySealed = (epochKey: string) => {
+        return this.unirepState.isEpochKeySealed(epochKey)
+    }
+
+    /*
      * Get the attestations of given epoch key
      */
     public getAttestations = (epochKey: string): IAttestation[] => {

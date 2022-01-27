@@ -86,6 +86,7 @@ declare class UnirepState {
     private _checkEpochKeyRange;
     private _isEpochKeySealed;
     private _updateGSTree;
+    isEpochKeySealed: (epochKey: string) => boolean;
     genGSTree: (epoch: number) => IncrementalQuinTree;
     genEpochTree: (epoch: number) => Promise<SparseMerkleTreeImpl>;
     GSTRootExists: (GSTRoot: BigInt | string, epoch: number) => boolean;

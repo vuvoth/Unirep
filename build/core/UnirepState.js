@@ -171,7 +171,7 @@ class UnirepState {
         * Check if epoch key has been sealed
         */
         this._isEpochKeySealed = (epochKey) => {
-            (0, assert_1.default)(this.sealedEpochKey[epochKey] !== true, `UnirepState: Epoch key (${epochKey}) has been sealed`);
+            (0, assert_1.default)(!this.isEpochKeySealed(epochKey), `UnirepState: Epoch key (${epochKey}) has been sealed`);
         };
         /*
         * Update Unirep global state tree in the given epoch
@@ -185,6 +185,14 @@ class UnirepState {
             // keep track of each GST root when verifying proofs
             this.globalStateTree[epoch].insert(GSTLeaf);
             this.epochGSTRootMap[epoch].set(this.globalStateTree[epoch].root.toString(), true);
+        };
+        /*
+        * Check if epoch key has been sealed
+        */
+        this.isEpochKeySealed = (epochKey) => {
+            if (this.sealedEpochKey[epochKey])
+                return true;
+            return false;
         };
         /*
          * Computes the global state tree of given epoch

@@ -101,6 +101,7 @@ const genReputationProof = async (args: any) => {
         args.contract,
         id,
     )
+    console.log(userState.toJSON(4))
 
      // Proving content
     const epoch = userState.getUnirepStateCurrentEpoch()

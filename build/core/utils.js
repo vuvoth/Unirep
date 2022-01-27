@@ -359,6 +359,8 @@ const genUnirepStateFromContract = async (provider, address, _unirepState) => {
                 const attestation = new UnirepState_1.Attestation(BigInt(attestation_.attesterId), BigInt(attestation_.posRep), BigInt(attestation_.negRep), BigInt(attestation_.graffiti), BigInt(attestation_.signUp));
                 const epochKey = args === null || args === void 0 ? void 0 : args._epochKey;
                 if (epochKey.eq(results === null || results === void 0 ? void 0 : results.epochKey)) {
+                    if (unirepState.isEpochKeySealed(epochKey.toString()))
+                        continue;
                     unirepState.addAttestation(epochKey.toString(), attestation, blockNumber);
                 }
             }
@@ -652,6 +654,8 @@ const genUserStateFromContract = async (provider, address, userIdentity, _userSt
                 const attestation = new UnirepState_1.Attestation(BigInt(attestation_.attesterId), BigInt(attestation_.posRep), BigInt(attestation_.negRep), BigInt(attestation_.graffiti), BigInt(attestation_.signUp));
                 const epochKey = args === null || args === void 0 ? void 0 : args._epochKey;
                 if (epochKey.eq(results === null || results === void 0 ? void 0 : results.epochKey)) {
+                    if (userState.isEpochKeySealed(epochKey.toString()))
+                        continue;
                     userState.addAttestation(epochKey.toString(), attestation, blockNumber);
                 }
             }
