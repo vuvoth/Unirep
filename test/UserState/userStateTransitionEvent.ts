@@ -27,6 +27,7 @@ describe('User state transition events in Unirep User State', async function () 
     const maxUsers = 10
     const userNum = Math.ceil(Math.random() * maxUsers)
     const transitionedUsers: number[] = []
+    const fromProofIndex = 0
 
     before(async () => {
         accounts = await hardhatEthers.getSigners()
@@ -721,7 +722,9 @@ describe('User state transition events in Unirep User State', async function () 
                 tx = await unirepContractCalledByAttester.submitAttestation(
                     attestation,
                     epochKey,
-                    proofIndex
+                    proofIndex,
+                    fromProofIndex,
+                    { value: attestingFee }
                 )
                 receipt = await tx.wait()
                 expect(receipt.status).to.equal(1)

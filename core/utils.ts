@@ -407,6 +407,8 @@ const genUnirepStateFromContract = async (
 
     const proofIndexMap = {}
     const isProofIndexValid = {}
+    const spentProofIndex = {}
+    isProofIndexValid[0] = true
     const events = transitionEvents.concat(
         startTransitionEvents, 
         processAttestationsEvents, 
@@ -452,12 +454,13 @@ const genUnirepStateFromContract = async (
             }
             const args = attestationSubmittedEvent?.args
             const epoch = Number(args?._epoch)
-            const proofIndex = Number(args?._proofIndex)
+            const toProofIndex = Number(args?.toProofIndex)
+            const fromProofIndex = Number(args?.fromProofIndex)
             const attestation_ = args?._attestation
-            const event = proofIndexMap[proofIndex]
+            const event = proofIndexMap[toProofIndex]
             const results = event?.args?._proof
 
-            if (isProofIndexValid[proofIndex] === undefined) {
+            if (isProofIndexValid[toProofIndex] === undefined) {
                 let isValid
                 if(event.event === "IndexedEpochKeyProof") {
                     isValid = await verifyEpochKeyProofEvent(event)
@@ -473,7 +476,7 @@ const genUnirepStateFromContract = async (
                 // verify the proof of the given proof index
                 if(!isValid) {
                     console.log('Proof is invalid: ', event.event, ' , transaction hash: ', event.transactionHash)
-                    isProofIndexValid[proofIndex] = false
+                    isProofIndexValid[toProofIndex] = false
                     continue
                 }
 
@@ -484,7 +487,7 @@ const genUnirepStateFromContract = async (
                 )
                 if(!isGSTRootExisted) {
                     console.log('Global state tree root does not exist')
-                    isProofIndexValid[proofIndex] = false
+                    isProofIndexValid[toProofIndex] = false
                     continue
                 }
 
@@ -506,13 +509,31 @@ const genUnirepStateFromContract = async (
                             unirepState.addReputationNullifiers(nullifiers[j], blockNumber)
                         }
                     } else {
-                        isProofIndexValid[proofIndex] = false
+                        isProofIndexValid[toProofIndex] = false
                         continue
                     }
                 }
-                isProofIndexValid[proofIndex] = true
+                isProofIndexValid[toProofIndex] = true
             }
-            if (isProofIndexValid[proofIndex]) {
+            if (fromProofIndex && isProofIndexValid[fromProofIndex]) {
+                const fromEvent = proofIndexMap[fromProofIndex]
+                if (fromEvent?.event !== "IndexedReputationProof"){
+                    console.log(`The proof index ${fromProofIndex} is not a reputation proof`)
+                    continue
+                }
+                
+                const proveReputationAmount = Number(fromEvent?.args?._proof?.proveReputationAmount)
+                const repInAttestation = Number(attestation_.posRep) + Number(attestation_.negRep)
+                if (proveReputationAmount < repInAttestation) {
+                    console.log(`The attestation requires ${repInAttestation} reputation`)
+                    continue
+                }
+            }
+            if (fromProofIndex && spentProofIndex[fromProofIndex]) {
+                console.log(`The reputation proof index ${fromProofIndex} has been spent in other attestation`)
+                continue
+            }
+            if (isProofIndexValid[toProofIndex] && isProofIndexValid[fromProofIndex]) {
                 // update attestation
                 const attestation = new Attestation(
                     BigInt(attestation_.attesterId),
@@ -526,6 +547,7 @@ const genUnirepStateFromContract = async (
                     if (unirepState.isEpochKeySealed(epochKey.toString())) continue
                     unirepState.addAttestation(epochKey.toString(), attestation, blockNumber)
                 }
+                if(fromProofIndex !== 0) spentProofIndex[fromProofIndex] = true
             }
         } else if (occurredEvent === Event.EpochEnded) {
             const epochEndedEvent = epochEndedEvents.pop()
@@ -784,6 +806,8 @@ const genUserStateFromContract = async (
 
     const proofIndexMap = {}
     const isProofIndexValid = {}
+    const spentProofIndex = {}
+    isProofIndexValid[0] = true
     const events = transitionEvents.concat(
         startTransitionEvents, 
         processAttestationsEvents, 
@@ -829,12 +853,13 @@ const genUserStateFromContract = async (
             }
             const args = attestationSubmittedEvent?.args
             const epoch = Number(args?._epoch)
-            const proofIndex = Number(args?._proofIndex)
+            const toProofIndex = Number(args?.toProofIndex)
+            const fromProofIndex = Number(args?.fromProofIndex)
             const attestation_ = args?._attestation
-            const event = proofIndexMap[proofIndex]
+            const event = proofIndexMap[toProofIndex]
             const results = event?.args?._proof
 
-            if (isProofIndexValid[proofIndex] === undefined) {
+            if (isProofIndexValid[toProofIndex] === undefined) {
                 let isValid
                 if(event.event === "IndexedEpochKeyProof") {
                     isValid = await verifyEpochKeyProofEvent(event)
@@ -850,7 +875,7 @@ const genUserStateFromContract = async (
                 // verify the proof of the given proof index
                 if(!isValid) {
                     console.log('Proof is invalid: ', event.event, ' , transaction hash: ', event.transactionHash)
-                    isProofIndexValid[proofIndex] = false
+                    isProofIndexValid[toProofIndex] = false
                     continue
                 }
 
@@ -861,7 +886,7 @@ const genUserStateFromContract = async (
                 )
                 if(!isGSTRootExisted) {
                     console.log('Global state tree root does not exist')
-                    isProofIndexValid[proofIndex] = false
+                    isProofIndexValid[toProofIndex] = false
                     continue
                 }
 
@@ -883,13 +908,31 @@ const genUserStateFromContract = async (
                             userState.addReputationNullifiers(nullifiers[j], blockNumber)
                         }
                     } else {
-                        isProofIndexValid[proofIndex] = false
+                        isProofIndexValid[toProofIndex] = false
                         continue
                     }
                 }
-                isProofIndexValid[proofIndex] = true
+                isProofIndexValid[toProofIndex] = true
             }
-            if (isProofIndexValid[proofIndex]) {
+            if (fromProofIndex && isProofIndexValid[fromProofIndex]) {
+                const fromEvent = proofIndexMap[fromProofIndex]
+                if (fromEvent?.event !== "IndexedReputationProof"){
+                    console.log(`The proof index ${fromProofIndex} is not a reputation proof`)
+                    continue
+                }
+                
+                const proveReputationAmount = Number(fromEvent?.args?._proof?.proveReputationAmount)
+                const repInAttestation = Number(attestation_.posRep) + Number(attestation_.negRep)
+                if (proveReputationAmount < repInAttestation) {
+                    console.log(`The attestation requires ${repInAttestation} reputation`)
+                    continue
+                }
+            }
+            if (fromProofIndex && spentProofIndex[fromProofIndex]) {
+                console.log(`The reputation proof index ${fromProofIndex} has been spent in other attestation`)
+                continue
+            }
+            if (isProofIndexValid[toProofIndex] && isProofIndexValid[fromProofIndex]) {
                 // update attestation
                 const attestation = new Attestation(
                     BigInt(attestation_.attesterId),
@@ -903,6 +946,7 @@ const genUserStateFromContract = async (
                     if (userState.isEpochKeySealed(epochKey.toString())) continue
                     userState.addAttestation(epochKey.toString(), attestation, blockNumber)
                 }
+                if(fromProofIndex !== 0) spentProofIndex[fromProofIndex] = true
             }
         } else if (occurredEvent === Event.EpochEnded) {
             const epochEndedEvent = epochEndedEvents.pop()
