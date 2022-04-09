@@ -19,8 +19,8 @@
     "author": "vivianjeng <vivi432@yahoo.com.tw>",
     "license": "MIT",
     "dependencies": {
-        "@unirep/config": "https://gitpkg.now.sh/vuvth/Unirep/packages/config?gitpgk-support&scripts.postinstall=yarn%20install%20--mode%3Dskip-build%20%26%26%20yarn%20build",
-        "@unirep/crypto": "https://gitpkg.now.sh/vuvth/Unirep/packages/crypto?gitpgk-support&scripts.postinstall=yarn%20install%20--mode%3Dskip-build%20%26%26%20yarn%20build",
+        "@unirep/config": "https://gitpkg.now.sh/vuvth/Unirep/packages/config?gitpgk-support",
+        "@unirep/crypto": "https://gitpkg.now.sh/vuvth/Unirep/packages/crypto?gitpgk-support",
         "argparse": "^2.0.1",
         "circom": "0.5.45",
         "circomlib": "0.5.3",
