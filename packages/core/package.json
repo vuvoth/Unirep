@@ -36,9 +36,9 @@
     },
     "dependencies": {
         "@typechain/ethers-v5": "^9.0.0",
-        "@unirep/circuits": "workspace:*",
-        "@unirep/contracts": "workspace:*",
-        "@unirep/crypto": "workspace:*",
+        "@unirep/circuits": "https://gitpkg.now.sh/vuvth/Unirep/packages/circuits?gitpgk-support",
+        "@unirep/contracts": "https://gitpkg.now.sh/vuvth/Unirep/packages/contracts?gitpgk-support",
+        "@unirep/crypto": "https://gitpkg.now.sh/vuvth/Unirep/packages/crypto?gitpgk-support",
         "argparse": "^2.0.1",
         "base64url": "^3.0.1",
         "ethers": "^5.4.6",
