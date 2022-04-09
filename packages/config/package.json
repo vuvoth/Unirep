@@ -8,7 +8,8 @@
     "license": "MIT",
     "scripts": {
         "build": "yarn tsc",
-        "test": "echo 'No test!!!'"
+        "test": "echo 'No test!!!'",
+        "prepublish": "yarn build"
     },
     "devDependencies": {
         "typescript": "^4.4.3"
