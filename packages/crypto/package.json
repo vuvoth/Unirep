@@ -3,9 +3,10 @@
     "version": "1.0.0",
     "main": "build/index.js",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc -b .",
         "test": "echo 'No test for crypto!!!'",
-        "lint": "prettier --write ."
+        "lint": "prettier --write .",
+        "prepublish": "yarn build"
     },
     "repository": "https://github.com/Unirep/crypto.git",
     "author": "vivianjeng <vivi432@yahoo.com.tw>",

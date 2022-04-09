@@ -8,7 +8,8 @@
         "build": "./scripts/buildVerifiers.sh && yarn compile && npx hardhat typechain && tsc",
         "compile": "npx hardhat compile",
         "test": "npx hardhat test --no-compile",
-        "lint": "prettier --write ."
+        "lint": "prettier --write .",
+        "prepublish": "yarn build"
     },
     "dependencies": {
         "@openzeppelin/contracts": "4.4.2",
